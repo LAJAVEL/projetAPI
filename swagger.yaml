@@ -1,0 +1,202 @@
+openapi: 3.0.0
+info:
+  title: Configurateur PC API
+  description: API pour l'application de configuration de PC sur mesure
+  version: 1.0.0
+servers:
+  - url: http://localhost:5000
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+paths:
+  /api/users/register:
+    post:
+      summary: Inscription utilisateur
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+                role:
+                  type: string
+                  enum: [user, admin]
+      responses:
+        201:
+          description: Utilisateur créé
+  /api/users/login:
+    post:
+      summary: Connexion utilisateur
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        200:
+          description: Connecté avec succès
+  /api/categories:
+    get:
+      summary: Liste des catégories
+      responses:
+        200:
+          description: Succès
+    post:
+      summary: Créer une catégorie (Admin)
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+      responses:
+        201:
+          description: Créé
+  /api/components:
+    get:
+      summary: Liste des composants
+      parameters:
+        - in: query
+          name: category
+          schema:
+            type: string
+        - in: query
+          name: brand
+          schema:
+            type: string
+      responses:
+        200:
+          description: Succès
+    post:
+      summary: Créer un composant (Admin)
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                brand:
+                  type: string
+                category:
+                  type: string
+                prices:
+                  type: array
+                  items:
+                    type: object
+      responses:
+        201:
+          description: Créé
+  /api/partners:
+    get:
+      summary: Liste des partenaires
+      responses:
+        200:
+          description: Succès
+    post:
+      summary: Créer un partenaire (Admin)
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                websiteUrl:
+                  type: string
+      responses:
+        201:
+          description: Créé
+  /api/configurations:
+    post:
+      summary: Créer une configuration
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                components:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      component:
+                        type: string
+                      priceAtTime:
+                        type: number
+                      quantity:
+                        type: number
+      responses:
+        201:
+          description: Créé
+    get:
+      summary: Liste toutes les configs (Admin)
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: Succès
+  /api/configurations/my:
+    get:
+      summary: Mes configurations
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: Succès
+  /api/configurations/{id}/pdf:
+    get:
+      summary: Exporter en PDF
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: PDF file
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
