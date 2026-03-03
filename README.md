@@ -7,16 +7,18 @@ Ce projet est une application complète (Backend + Frontend) permettant la gesti
 La méthode la plus simple pour lancer le projet est d'utiliser Docker. Cela installe et configure automatiquement la base de données, l'API et l'interface utilisateur.
 
 ### Prérequis
-*   **Docker** et **Docker Compose** installés sur votre machine.
+*   **Docker Desktop** installé et **lancé** sur votre machine.
 
 ### Lancement
-1.  Cloner le dépôt :
+1.  **Lancer Docker Desktop** et attendre qu'il soit prêt.
+
+2.  Cloner le dépôt :
     ```bash
     git clone https://github.com/LAJAVEL/projetAPI.git
     cd projetAPI
     ```
 
-2.  Lancer l'application :
+3.  Lancer l'application :
     ```bash
     docker-compose up --build
     ```
