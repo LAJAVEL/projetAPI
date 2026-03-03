@@ -1,0 +1,28 @@
+import { Link } from 'react-router-dom';
+
+const AdminHome = () => {
+  return (
+    <div className="container">
+      <h2>Backoffice</h2>
+      <div className="grid">
+        <div className="card">
+          <h3>Catégories</h3>
+          <p>Créer, modifier et supprimer les catégories (CPU, GPU, etc.).</p>
+          <Link to="/admin/categories">Gérer les catégories</Link>
+        </div>
+        <div className="card">
+          <h3>Partenaires</h3>
+          <p>Créer, modifier et supprimer les partenaires (sites marchands).</p>
+          <Link to="/admin/partners">Gérer les partenaires</Link>
+        </div>
+        <div className="card">
+          <h3>Composants</h3>
+          <p>Créer, modifier et supprimer les composants et leurs prix.</p>
+          <Link to="/admin/components">Gérer les composants</Link>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default AdminHome;

@@ -10,10 +10,11 @@ const Navbar = () => {
       <div className="links">
         {user ? (
           <>
-            <span>Bonjour, {user.name}</span>
+            <span>Bonjour, {user.name || user.email}</span>
             <Link to="/">Mes Configs</Link>
             <Link to="/configurator">Nouvelle Config</Link>
-            <button onClick={logout} style={{ marginLeft: '1rem', padding: '0.3em 0.8em', fontSize: '0.9em' }}>
+            {user.role === 'admin' && <Link to="/admin">Backoffice</Link>}
+            <button onClick={logout} style={{ padding: '0.3em 0.8em', fontSize: '0.9em' }}>
               Déconnexion
             </button>
           </>

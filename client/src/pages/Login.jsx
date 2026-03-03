@@ -20,10 +20,10 @@ const Login = () => {
   };
 
   return (
-    <div className="container">
+    <div className="form-container">
       <h2>Connexion</h2>
       {error && <p className="error">{error}</p>}
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} style={{ width: '100%' }}>
         <div>
           <input
             type="email"

@@ -2,7 +2,7 @@
 
 Ce projet est une application complète (Backend + Frontend) permettant la gestion d'un configurateur de PC sur mesure. Il inclut une API RESTful (Node.js/Express/MongoDB) et une interface utilisateur moderne (React/Vite).
 
-## 🚀 Démarrage Rapide (Recommandé avec Docker)
+##  Démarrage Rapide (Recommandé avec Docker)
 
 La méthode la plus simple pour lancer le projet est d'utiliser Docker. Cela installe et configure automatiquement la base de données, l'API et l'interface utilisateur.
 
@@ -16,12 +16,21 @@ La méthode la plus simple pour lancer le projet est d'utiliser Docker. Cela ins
     ```bash
     git clone https://github.com/LAJAVEL/projetAPI.git
     cd projetAPI
+    cd API_REST
     ```
 
 3.  Lancer l'application :
     ```bash
     docker-compose up --build
     ```
+
+4.  (Optionnel) Injecter des données de démonstration + créer le compte admin :
+    ```bash
+    docker-compose exec -T api node scripts/seed.js
+    ```
+    Identifiants admin :
+    - Email : `admin@admin.fr`
+    - Mot de passe : `admin123`
 
 ### Accès
 Une fois lancé, vous pouvez accéder aux services suivants :
