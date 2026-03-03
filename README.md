@@ -1,70 +1,77 @@
 # Projet API REST - Configurateur PC
 
-Ce projet est une API RESTful développée en Node.js, Express et MongoDB. Elle permet la gestion complète d'un configurateur de PC sur mesure (composants, catégories, utilisateurs, configurations).
+Ce projet est une application complète (Backend + Frontend) permettant la gestion d'un configurateur de PC sur mesure. Il inclut une API RESTful (Node.js/Express/MongoDB) et une interface utilisateur moderne (React/Vite).
 
-## Fonctionnalités
+## 🚀 Démarrage Rapide (Recommandé avec Docker)
 
-L'API offre les services suivants :
-*   **Authentification** : Inscription et connexion sécurisées via JWT (JSON Web Tokens).
-*   **Gestion des Composants** : CRUD complet pour les catégories (CPU, GPU, etc.) et les composants matériels.
-*   **Gestion des Partenaires** : Suivi des prix et liens vers les sites marchands partenaires.
-*   **Configurations Utilisateur** : Création, sauvegarde et consultation de configurations PC personnalisées.
-*   **Export PDF** : Génération automatique d'un devis au format PDF pour une configuration donnée.
+La méthode la plus simple pour lancer le projet est d'utiliser Docker. Cela installe et configure automatiquement la base de données, l'API et l'interface utilisateur.
 
-## Prérequis
+### Prérequis
+*   **Docker** et **Docker Compose** installés sur votre machine.
 
-Pour exécuter ce projet localement, il est nécessaire d'avoir :
-*   **Node.js** (version 14 ou supérieure).
-*   **npm** (gestionnaire de paquets).
-*   Un cluster **MongoDB Atlas** ou une instance MongoDB locale.
-
-## Installation
-
-1.  Cloner le dépôt Git :
+### Lancement
+1.  Cloner le dépôt :
     ```bash
     git clone https://github.com/LAJAVEL/projetAPI.git
     cd projetAPI
     ```
 
-2.  Installer les dépendances du projet :
+2.  Lancer l'application :
     ```bash
-    npm install
+    docker-compose up --build
     ```
 
-3.  Configurer les variables d'environnement :
-    *   Créer un fichier `.env` à la racine du projet.
-    *   Ajouter les variables suivantes (remplacer par vos propres valeurs) :
-        ```env
-        PORT=5000
-        MONGO_URI=votre_chaine_de_connexion_mongodb
-        JWT_SECRET=votre_cle_secrete_jwt
-        ```
+### Accès
+Une fois lancé, vous pouvez accéder aux services suivants :
 
-## Démarrage
+*   **Interface Utilisateur (Frontend)** : [http://localhost](http://localhost) (ou http://localhost:80)
+*   **Documentation API (Swagger UI)** : [http://localhost:5000/api-docs](http://localhost:5000/api-docs)
+*   **API REST** : [http://localhost:5000](http://localhost:5000)
 
-Pour lancer le serveur en mode développement (avec redémarrage automatique) :
+---
+
+## 🛠️ Installation Manuelle (Sans Docker)
+
+Si vous préférez installer les composants manuellement :
+
+### Prérequis
+*   Node.js (v14+)
+*   MongoDB (local ou Atlas)
+
+### 1. Backend (API)
 ```bash
-npm run dev
-```
+# Installation
+npm install
 
-Pour lancer le serveur en mode production :
-```bash
+# Configuration (.env à la racine)
+# PORT=5000
+# MONGO_URI=votre_uri_mongodb
+
+# Démarrage
 npm start
 ```
 
-Le serveur sera accessible par défaut sur `http://localhost:5000`.
+### 2. Frontend (Client)
+```bash
+cd client
 
-## Documentation API
+# Installation
+npm install
 
-Une documentation complète et interactive (Swagger UI) est disponible une fois le serveur lancé à l'adresse suivante :
+# Démarrage (Développement)
+npm run dev
+```
+L'interface sera accessible sur `http://localhost:5173`.
 
-**`http://localhost:5000/api-docs`**
+## Fonctionnalités Principales
 
-Cette interface permet de tester directement tous les endpoints de l'API.
+*   **Interface Utilisateur** : Design épuré ("Noir sur Blanc"), tableau de bord, configurateur interactif.
+*   **Authentification** : Inscription et connexion sécurisées.
+*   **Configurateur** : Sélection de composants par catégorie, calcul du prix en temps réel, sauvegarde des configurations.
+*   **API** : Documentation Swagger complète, CRUD composants/utilisateurs/configurations.
 
 ## Tests
-
-Des tests unitaires et d'intégration sont inclus pour vérifier le bon fonctionnement de l'API. Pour les exécuter :
+Pour exécuter les tests du backend :
 ```bash
 npm test
 ```
