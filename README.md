@@ -1,88 +1,53 @@
-# Projet API REST - Configurateur PC
+# Projet Configurateur PC (API + Frontend)
 
-Ce projet est une application complète (Backend + Frontend) permettant la gestion d'un configurateur de PC sur mesure. Il inclut une API RESTful (Node.js/Express/MongoDB) et une interface utilisateur moderne (React/Vite).
+Application complète de configurateur PC avec Backend (Node/Express/Mongo) et Frontend (React/Vite), conteneurisée avec Docker.
 
-##  Démarrage Rapide (Recommandé avec Docker)
+## 🚀 Démarrage Rapide (Recommandé)
 
-La méthode la plus simple pour lancer le projet est d'utiliser Docker. Cela installe et configure automatiquement la base de données, l'API et l'interface utilisateur.
+### 1. Prérequis
+*   **Docker Desktop** doit être installé et **lancé** (attendre que l'icône ne bouge plus).
 
-### Prérequis
-*   **Docker Desktop** installé et **lancé** sur votre machine.
+### 2. Installation & Lancement
+Ouvrez un terminal (PowerShell ou CMD) et lancez les commandes suivantes :
 
-### Lancement
-1.  **Lancer Docker Desktop** et attendre qu'il soit prêt.
+```bash
+# 1. Récupérer le projet
+git clone https://github.com/LAJAVEL/projetAPI.git
 
-2.  Cloner le dépôt :
-    ```bash
-    git clone https://github.com/LAJAVEL/projetAPI.git
-    cd projetAPI
-    cd API_REST
-    ```
+# 2. Aller dans le dossier du projet
+cd projetAPI
+cd API_REST
 
-3.  Lancer l'application :
-    ```bash
-    docker-compose up --build
-    ```
+# 3. Lancer l'application
+docker-compose up --build
+```
 
-4.  (Optionnel) Injecter des données de démonstration + créer le compte admin :
-    ```bash
-    docker-compose exec -T api node scripts/seed.js
-    ```
-    Identifiants admin :
-    - Email : `admin@admin.fr`
-    - Mot de passe : `admin123`
+### 3. Initialisation (Important pour le prof)
+Par défaut, la base de données est vide. Pour injecter le compte Admin et des données de démo, **ouvrez un deuxième terminal** et lancez :
+```bash
+docker-compose exec api node scripts/seed.js
+```
 
-### Accès
-Une fois lancé, vous pouvez accéder aux services suivants :
-
-*   **Interface Utilisateur (Frontend)** : [http://localhost](http://localhost) (ou http://localhost:80)
-*   **Documentation API (Swagger UI)** : [http://localhost:5000/api-docs](http://localhost:5000/api-docs)
-*   **API REST** : [http://localhost:5000](http://localhost:5000)
+### 4. Accès
+Une fois les logs stabilisés et le seed effectué, ouvrez votre navigateur :
+*   **Application** : [http://localhost](http://localhost)
+*   **Admin** : [http://localhost/login](http://localhost/login) (Compte : `admin@admin.fr` / `admin123`)
+*   **API Docs** : [http://localhost:5000/api-docs](http://localhost:5000/api-docs)
 
 ---
 
-## 🛠️ Installation Manuelle (Sans Docker)
+### 🆘 En cas de problème
+*   **"no configuration file provided"** : Vérifiez que vous êtes bien dans le dossier `API_REST` (là où est le fichier `docker-compose.yml`).
+*   **Erreur connexion Admin** : Assurez-vous d'avoir lancé la commande `seed.js` ci-dessus.
 
-Si vous préférez installer les composants manuellement :
+---
 
-### Prérequis
-*   Node.js (v14+)
-*   MongoDB (local ou Atlas)
+## 🛠️ Développement (Sans Docker)
+*   **Backend** : `npm install` puis `npm start` (port 5000)
+*   **Frontend** : `cd client` puis `npm install` et `npm run dev` (port 5173)
 
-### 1. Backend (API)
-```bash
-# Installation
-npm install
-
-# Configuration (.env à la racine)
-# PORT=5000
-# MONGO_URI=votre_uri_mongodb
-
-# Démarrage
-npm start
-```
-
-### 2. Frontend (Client)
-```bash
-cd client
-
-# Installation
-npm install
-
-# Démarrage (Développement)
-npm run dev
-```
-L'interface sera accessible sur `http://localhost:5173`.
-
-## Fonctionnalités Principales
-
-*   **Interface Utilisateur** : Design épuré ("Noir sur Blanc"), tableau de bord, configurateur interactif.
-*   **Authentification** : Inscription et connexion sécurisées.
-*   **Configurateur** : Sélection de composants par catégorie, calcul du prix en temps réel, sauvegarde des configurations.
-*   **API** : Documentation Swagger complète, CRUD composants/utilisateurs/configurations.
-
-## Tests
-Pour exécuter les tests du backend :
+## ✅ Tests
+Lancer les tests unitaires backend :
 ```bash
 npm test
 ```

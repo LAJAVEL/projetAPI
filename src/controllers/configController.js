@@ -7,7 +7,7 @@ const generateConfigPDF = require('../utils/pdfGenerator');
 const createConfig = async (req, res) => {
   const { name, components } = req.body;
 
-  if (components && components.length === 0) {
+  if (!components || components.length === 0) {
     res.status(400).json({ message: 'No components added' });
     return;
   } else {
@@ -28,13 +28,55 @@ const createConfig = async (req, res) => {
     const config = new Configuration({
       user: req.user._id,
       name,
-      components,
+      components: components.map(c => ({
+        component: c.component,
+        priceAtTime: c.priceAtTime,
+        quantity: c.quantity || 1
+      })),
       totalCost
     });
 
     const createdConfig = await config.save();
     res.status(201).json(createdConfig);
   }
+};
+
+const updateConfig = async (req, res) => {
+  const { name, components } = req.body;
+  const config = await Configuration.findById(req.params.id);
+
+  if (!config) {
+    res.status(404).json({ message: 'Configuration not found' });
+    return;
+  }
+
+  if (config.user.toString() !== req.user._id.toString() && req.user.role !== 'admin') {
+    res.status(401).json({ message: 'Not authorized' });
+    return;
+  }
+
+  if (!components || components.length === 0) {
+    res.status(400).json({ message: 'No components added' });
+    return;
+  }
+
+  let totalCost = 0;
+  for (const item of components) {
+    const priceAtTime = Number(item.priceAtTime) || 0;
+    const quantity = Number(item.quantity) || 1;
+    totalCost += priceAtTime * quantity;
+  }
+
+  config.name = name || config.name;
+  config.components = components.map((c) => ({
+    component: c.component,
+    priceAtTime: Number(c.priceAtTime) || 0,
+    quantity: Number(c.quantity) || 1,
+  }));
+  config.totalCost = totalCost;
+
+  const updatedConfig = await config.save();
+  res.json(updatedConfig);
 };
 
 // @desc    Récupérer les configurations de l'utilisateur connecté
@@ -114,6 +156,7 @@ const deleteConfig = async (req, res) => {
 
 module.exports = {
   createConfig,
+  updateConfig,
   getMyConfigs,
   getConfigById,
   getConfigs,

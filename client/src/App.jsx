@@ -44,6 +44,14 @@ function App() {
           }
         />
         <Route
+          path="/configurator/:id"
+          element={
+            <PrivateRoute>
+              <Configurator />
+            </PrivateRoute>
+          }
+        />
+        <Route
           path="/admin"
           element={
             <PrivateRoute>

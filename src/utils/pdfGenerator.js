@@ -6,11 +6,16 @@ const generateConfigPDF = (configuration, res) => {
   // Pipe to response
   doc.pipe(res);
 
+  // Use standard font to avoid issues
+  doc.font('Helvetica');
+
   // Header
   doc.fontSize(25).text('Configuration PC', { align: 'center' });
   doc.moveDown();
-  doc.fontSize(18).text(`Nom: ${configuration.name}`);
-  doc.fontSize(14).text(`Utilisateur: ${configuration.user.name}`);
+  doc.fontSize(14).text(`Nom: ${configuration.name}`);
+  // Check if user exists before accessing name
+  const userName = configuration.user ? configuration.user.name : 'Inconnu';
+  doc.text(`Utilisateur: ${userName}`);
   doc.text(`Date: ${new Date(configuration.createdAt).toLocaleDateString()}`);
   doc.moveDown();
 
@@ -20,17 +25,27 @@ const generateConfigPDF = (configuration, res) => {
 
   let total = 0;
 
-  configuration.components.forEach((item, index) => {
-    const component = item.component;
-    const price = item.priceAtTime;
-    const quantity = item.quantity || 1;
-    const lineTotal = price * quantity;
-    total += lineTotal;
+  if (configuration.components && configuration.components.length > 0) {
+    configuration.components.forEach((item, index) => {
+      // Check if component exists (it might have been deleted)
+      const component = item.component;
+      if (component) {
+        const price = item.priceAtTime || 0;
+        const quantity = item.quantity || 1;
+        const lineTotal = price * quantity;
+        total += lineTotal;
 
-    doc.fontSize(12).text(`${index + 1}. ${component.brand} ${component.title}`);
-    doc.fontSize(10).text(`   Prix unitaire: ${price.toFixed(2)} € | Quantité: ${quantity} | Total: ${lineTotal.toFixed(2)} €`);
-    doc.moveDown(0.5);
-  });
+        doc.fontSize(12).text(`${index + 1}. ${component.brand || ''} ${component.title || 'Composant inconnu'}`);
+        doc.fontSize(10).text(`   Prix unitaire: ${price.toFixed(2)} € | Quantité: ${quantity} | Total: ${lineTotal.toFixed(2)} €`);
+        doc.moveDown(0.5);
+      } else {
+        doc.fontSize(12).text(`${index + 1}. Composant supprimé ou indisponible`);
+        doc.moveDown(0.5);
+      }
+    });
+  } else {
+    doc.fontSize(12).text("Aucun composant dans cette configuration.");
+  }
 
   // Total
   doc.moveDown();

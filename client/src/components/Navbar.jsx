@@ -13,7 +13,9 @@ const Navbar = () => {
             <span>Bonjour, {user.name || user.email}</span>
             <Link to="/">Mes Configs</Link>
             <Link to="/configurator">Nouvelle Config</Link>
-            {user.role === 'admin' && <Link to="/admin">Backoffice</Link>}
+            {user.role === 'admin' && (
+              <Link to="/admin" style={{ color: '#d9534f' }}>Admin</Link>
+            )}
             <button onClick={logout} style={{ padding: '0.3em 0.8em', fontSize: '0.9em' }}>
               Déconnexion
             </button>
