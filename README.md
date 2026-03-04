@@ -2,7 +2,7 @@
 
 Application complète de configurateur PC avec Backend (Node/Express/Mongo) et Frontend (React/Vite), conteneurisée avec Docker.
 
-## 🚀 Démarrage Rapide (Recommandé)
+##  Démarrage Rapide (Recommandé)
 
 ### 1. Prérequis
 *   **Docker Desktop** doit être installé et **lancé** (attendre que l'icône ne bouge plus).
@@ -36,7 +36,7 @@ Une fois les logs stabilisés et le seed effectué, ouvrez votre navigateur :
 
 ---
 
-### 🆘 En cas de problème
+###  En cas de problème
 *   **"no configuration file provided"** : Vérifiez que vous êtes bien dans le dossier `API_REST` (là où est le fichier `docker-compose.yml`).
 *   **Erreur connexion Admin** : Assurez-vous d'avoir lancé la commande `seed.js` ci-dessus.
 
@@ -46,7 +46,7 @@ Une fois les logs stabilisés et le seed effectué, ouvrez votre navigateur :
 *   **Backend** : `npm install` puis `npm start` (port 5000)
 *   **Frontend** : `cd client` puis `npm install` et `npm run dev` (port 5173)
 
-## ✅ Tests
+##  Tests
 Lancer les tests unitaires backend :
 ```bash
 npm test
