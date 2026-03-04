@@ -1,4 +1,4 @@
-# Projet Configurateur PC (API + Frontend)
+# Projet Configurateur PC 
 
 Application complète de configurateur PC avec Backend (Node/Express/Mongo) et Frontend (React/Vite), conteneurisée avec Docker.
 
@@ -41,7 +41,7 @@ Une fois les logs stabilisés et le seed effectué, ouvrez votre navigateur :
 
 ---
 
-## 🛠️ Développement (Sans Docker)
+## Développement (Sans Docker)
 
 ⚠️ **Important** : Cette méthode nécessite d'installer et de configurer MongoDB vous-même.
 
