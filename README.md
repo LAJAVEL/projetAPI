@@ -30,7 +30,7 @@ docker-compose exec api node scripts/seed.js
 ### 4. Accès
 Une fois les logs stabilisés et le seed effectué, ouvrez votre navigateur :
 *   **Application** : [http://localhost](http://localhost)
-*   **Admin** : [http://localhost/login](http://localhost/login) (Compte : `admin@admin.fr` / `admin123`)
+*   **Admin** : [http://localhost/login](http://localhost/login) (Compte : `admin@admin.fr` / `admin123`) (et apres acceder a l'onglet admin pour la configuration avancés , /admin)
 *   **API Docs** : [http://localhost:5000/api-docs](http://localhost:5000/api-docs)
 
 ---
