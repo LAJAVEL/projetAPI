@@ -89,15 +89,15 @@ docker-compose exec api npm test
 
 ---
 
-##  Validation du TP 
+##  Validation 
 
-### Technologies demandées
+### Technologies 
 *   **API** : Node.js + Express + MongoDB → OK (voir `package.json`)
 *   **BackOffice** : React → OK (client React dans `client/`)
 *   **Authentification** : JWT → OK (voir `src/controllers/authController.js`)
 *   **Tests** : Jest + Supertest → OK (voir `package.json`, tests dans `src/tests/`)
 
-### Fonctionnel / Endpoints
+### Endpoints
 *   **Catégories** : lister + CRUD admin → OK
 *   **Composants** : lister + détail + CRUD admin → OK
 *   **Partenaires** : lister + CRUD admin → OK
