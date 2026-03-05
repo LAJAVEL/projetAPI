@@ -1,4 +1,4 @@
-# Projet Configurateur PC (API + Frontend)
+# Projet Configurateur PC 
 
 Application complète de configurateur PC avec Backend (Node/Express/Mongo) et Frontend (React/Vite), conteneurisée avec Docker.
 
@@ -24,7 +24,7 @@ docker-compose up --build -d
 
 *(Option : sans `-d` si vous préférez garder les logs dans le terminal : `docker-compose up --build`.)*
 
-### 3. Initialisation (Important pour le prof)
+### 3. Initialisation 
 Par défaut, la base de données est vide. Pour injecter le compte Admin et des données de démo, **ouvrez un deuxième terminal** et lancez :
 ```bash
 docker-compose exec api node scripts/seed.js
@@ -38,15 +38,15 @@ Une fois les logs stabilisés et le seed effectué, ouvrez votre navigateur :
 
 ---
 
-### 🆘 En cas de problème
+###  En cas de problème
 *   **"no configuration file provided"** : Vérifiez que vous êtes bien dans le dossier du projet (là où est le fichier `docker-compose.yml`).
 *   **Erreur connexion Admin** : Assurez-vous d'avoir lancé la commande `seed.js` ci-dessus.
 
 ---
 
-## 🛠️ Développement (Sans Docker)
+##  Développement (Sans Docker)
 
-⚠️ **Important** : Cette méthode nécessite d'installer et de configurer MongoDB vous-même.
+ **Important** : Cette méthode nécessite d'installer et de configurer MongoDB vous-même.
 
 ### Prérequis
 *   Node.js (v14+)
@@ -89,7 +89,7 @@ docker-compose exec api npm test
 
 ---
 
-## ✅ Validation du TP (ce qui a été fait)
+##  Validation du TP 
 
 ### Technologies demandées
 *   **API** : Node.js + Express + MongoDB → OK (voir `package.json`)
