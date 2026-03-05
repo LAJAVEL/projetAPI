@@ -5,7 +5,7 @@ Application complète de configurateur PC avec Backend (Node/Express/Mongo) et F
 ## Démarrage Rapide (Recommandé)
 
 ### 1. Prérequis
-*   **Docker Desktop** doit être installé et **lancé** (attendre que l'icône ne bouge plus).
+*   **Docker Desktop** doit être installé et **lancé** .
 
 ### 2. Installation & Lancement
 Ouvrez un terminal (PowerShell ou CMD) et lancez les commandes suivantes :
