@@ -2,7 +2,7 @@
 
 Application complète de configurateur PC avec Backend (Node/Express/Mongo) et Frontend (React/Vite), conteneurisée avec Docker.
 
-## 🚀 Démarrage Rapide (Recommandé)
+## Démarrage Rapide (Recommandé)
 
 ### 1. Prérequis
 *   **Docker Desktop** doit être installé et **lancé** (attendre que l'icône ne bouge plus).
@@ -76,7 +76,7 @@ npm run dev
 ```
 L'interface sera accessible sur `http://localhost:5173`.
 
-## ✅ Tests
+## Tests
 Lancer les tests unitaires backend :
 ```bash
 npm test
