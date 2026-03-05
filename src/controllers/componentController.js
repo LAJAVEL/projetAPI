@@ -1,5 +1,23 @@
 const Component = require('../models/Component');
 
+const normalizeString = (value) => (typeof value === 'string' ? value.trim() : value);
+
+const validateComponentPayload = ({ category, brand, title, prices }) => {
+  const nextCategory = normalizeString(category);
+  const nextBrand = normalizeString(brand);
+  const nextTitle = normalizeString(title);
+
+  if (!nextCategory) return 'Catégorie obligatoire.';
+  if (!nextBrand) return 'Marque obligatoire.';
+  if (!nextTitle) return 'Titre obligatoire.';
+
+  if (!Array.isArray(prices) || prices.length === 0) return 'Prix obligatoire.';
+  const numericPrice = Number(prices[0]?.price);
+  if (!Number.isFinite(numericPrice) || numericPrice <= 0) return 'Prix invalide.';
+
+  return null;
+};
+
 // @desc    Récupérer tous les composants avec filtre optionnel
 // @route   GET /api/components
 // @access  Public
@@ -44,14 +62,20 @@ const getComponentById = async (req, res) => {
 const createComponent = async (req, res) => {
   const { category, brand, title, model, description, specifications, image, prices } = req.body;
 
+  const validationError = validateComponentPayload({ category, brand, title, prices });
+  if (validationError) {
+    res.status(400).json({ message: validationError });
+    return;
+  }
+
   const component = new Component({
-    category,
-    brand,
-    title,
-    model,
-    description,
+    category: normalizeString(category),
+    brand: normalizeString(brand),
+    title: normalizeString(title),
+    model: normalizeString(model),
+    description: normalizeString(description),
     specifications,
-    image,
+    image: normalizeString(image),
     prices
   });
 
@@ -68,14 +92,31 @@ const updateComponent = async (req, res) => {
   const component = await Component.findById(req.params.id);
 
   if (component) {
-    component.category = category || component.category;
-    component.brand = brand || component.brand;
-    component.title = title || component.title;
-    component.model = model || component.model;
-    component.description = description || component.description;
-    component.specifications = specifications || component.specifications;
-    component.image = image || component.image;
-    if (prices) component.prices = prices;
+    const nextCategory = normalizeString(category);
+    const nextBrand = normalizeString(brand);
+    const nextTitle = normalizeString(title);
+    const nextModel = normalizeString(model);
+    const nextDescription = normalizeString(description);
+    const nextImage = normalizeString(image);
+
+    if (category != null && !nextCategory) return res.status(400).json({ message: 'Catégorie obligatoire.' });
+    if (brand != null && !nextBrand) return res.status(400).json({ message: 'Marque obligatoire.' });
+    if (title != null && !nextTitle) return res.status(400).json({ message: 'Titre obligatoire.' });
+    if (prices != null) {
+      const numericPrice = Number(prices?.[0]?.price);
+      if (!Number.isFinite(numericPrice) || numericPrice <= 0) {
+        return res.status(400).json({ message: 'Prix invalide.' });
+      }
+    }
+
+    if (category != null) component.category = nextCategory;
+    if (brand != null) component.brand = nextBrand;
+    if (title != null) component.title = nextTitle;
+    if (model != null) component.model = nextModel;
+    if (description != null) component.description = nextDescription;
+    if (specifications != null) component.specifications = specifications;
+    if (image != null) component.image = nextImage;
+    if (prices != null) component.prices = prices;
 
     const updatedComponent = await component.save();
     res.json(updatedComponent);

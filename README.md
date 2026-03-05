@@ -1,8 +1,8 @@
-# Projet Configurateur PC 
+# Projet Configurateur PC (API + Frontend)
 
 Application complète de configurateur PC avec Backend (Node/Express/Mongo) et Frontend (React/Vite), conteneurisée avec Docker.
 
-## ! Démarrage Rapide (Recommandé)
+## 🚀 Démarrage Rapide (Recommandé)
 
 ### 1. Prérequis
 *   **Docker Desktop** doit être installé et **lancé** (attendre que l'icône ne bouge plus).
@@ -16,12 +16,15 @@ git clone https://github.com/LAJAVEL/projetAPI.git
 
 # 2. Aller dans le dossier du projet
 cd projetAPI
+*(Si vous avez téléchargé le ZIP GitHub, le dossier s'appelle souvent `projetAPI-main`.)*
 
 # 3. Lancer l'application
-docker-compose up --build
+docker-compose up --build -d
 ```
 
-### 3. Initialisation 
+*(Option : sans `-d` si vous préférez garder les logs dans le terminal : `docker-compose up --build`.)*
+
+### 3. Initialisation (Important pour le prof)
 Par défaut, la base de données est vide. Pour injecter le compte Admin et des données de démo, **ouvrez un deuxième terminal** et lancez :
 ```bash
 docker-compose exec api node scripts/seed.js
@@ -30,18 +33,18 @@ docker-compose exec api node scripts/seed.js
 ### 4. Accès
 Une fois les logs stabilisés et le seed effectué, ouvrez votre navigateur :
 *   **Application** : [http://localhost](http://localhost)
-*   **Admin** : [http://localhost/login](http://localhost/login) (Compte : `admin@admin.fr` / `admin123`) (et apres acceder a l'onglet admin pour la configuration avancés , /admin)
+*   **Admin** : [http://localhost/login](http://localhost/login) (Compte : `admin@admin.fr` / `admin123`, puis onglet Admin : `/admin`)
 *   **API Docs** : [http://localhost:5000/api-docs](http://localhost:5000/api-docs)
 
 ---
 
-### !! En cas de problème
+### 🆘 En cas de problème
 *   **"no configuration file provided"** : Vérifiez que vous êtes bien dans le dossier du projet (là où est le fichier `docker-compose.yml`).
 *   **Erreur connexion Admin** : Assurez-vous d'avoir lancé la commande `seed.js` ci-dessus.
 
 ---
 
-## Développement (Sans Docker)
+## 🛠️ Développement (Sans Docker)
 
 ⚠️ **Important** : Cette méthode nécessite d'installer et de configurer MongoDB vous-même.
 
@@ -73,8 +76,35 @@ npm run dev
 ```
 L'interface sera accessible sur `http://localhost:5173`.
 
-##  Tests
+## ✅ Tests
 Lancer les tests unitaires backend :
 ```bash
 npm test
 ```
+
+Lancer les tests dans Docker (recommandé si vous utilisez Docker Compose) :
+```bash
+docker-compose exec api npm test
+```
+
+---
+
+## ✅ Validation du TP (ce qui a été fait)
+
+### Technologies demandées
+*   **API** : Node.js + Express + MongoDB → OK (voir `package.json`)
+*   **BackOffice** : React → OK (client React dans `client/`)
+*   **Authentification** : JWT → OK (voir `src/controllers/authController.js`)
+*   **Tests** : Jest + Supertest → OK (voir `package.json`, tests dans `src/tests/`)
+
+### Fonctionnel / Endpoints
+*   **Catégories** : lister + CRUD admin → OK
+*   **Composants** : lister + détail + CRUD admin → OK
+*   **Partenaires** : lister + CRUD admin → OK
+*   **Configurations** : créer + gérer plusieurs configs par utilisateur + export PDF → OK
+
+### Documentation OpenAPI
+*   Une doc machine-readable existe et couvre les endpoints (auth, catégories, composants, partenaires, configurations + PDF) → OK (`swagger.yaml` + UI dans `/api-docs`)
+
+### Tests
+*   Les tests passent via `npm test` (Jest + Supertest) → OK

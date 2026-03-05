@@ -33,7 +33,6 @@ const Dashboard = () => {
   };
 
   const downloadPDF = async (e, id) => {
-    // Empêcher tout comportement par défaut (même si c'est un bouton)
     if (e && e.preventDefault) e.preventDefault();
     
     try {
@@ -54,15 +53,13 @@ const Dashboard = () => {
       document.body.appendChild(link);
       link.click();
       
-      // Nettoyage après un court délai
       setTimeout(() => {
         if (document.body.contains(link)) {
-            document.body.removeChild(link);
+          document.body.removeChild(link);
         }
         window.URL.revokeObjectURL(url);
       }, 100);
     } catch (err) {
-      // Silence est d'or
     }
   };
 
@@ -80,14 +77,14 @@ const Dashboard = () => {
               <h3>{config.name}</h3>
               <p>Prix Total : <strong>{config.totalCost} €</strong></p>
               <p>Composants : {config.components.length}</p>
-              <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
-                <button onClick={(e) => downloadPDF(e, config._id)} style={{ backgroundColor: '#5bc0de' }}>
+              <div className="row-actions" style={{ marginTop: '10px' }}>
+                <button onClick={(e) => downloadPDF(e, config._id)} className="btn-primary">
                   PDF
                 </button>
-                <button onClick={() => navigate(`/configurator/${config._id}`)} style={{ backgroundColor: '#666' }}>
+                <button onClick={() => navigate(`/configurator/${config._id}`)} className="btn-neutral">
                   Modifier
                 </button>
-                <button onClick={() => deleteConfig(config._id)} style={{ backgroundColor: '#d9534f' }}>
+                <button onClick={() => deleteConfig(config._id)} className="btn-danger">
                   Supprimer
                 </button>
               </div>

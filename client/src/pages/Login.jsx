@@ -45,10 +45,16 @@ const Login = () => {
         <button type="submit">Se connecter</button>
       </form>
 
-      <div style={{ marginTop: '2rem', padding: '1rem', backgroundColor: '#f5f5f5', borderRadius: '8px', fontSize: '0.9em', color: '#666' }}>
-        <strong>Accès Admin (Démonstration) :</strong><br/>
-        Email : <code>admin@admin.fr</code><br/>
-        Mot de passe : <code>admin123</code>
+      <div className="card" style={{ marginTop: '16px', background: 'var(--surface-2)' }}>
+        <div style={{ display: 'grid', gap: '6px' }}>
+          <div style={{ fontWeight: 650 }}>Accès Admin :</div>
+          <div className="muted" style={{ fontSize: '12px' }}>
+            Email : <code>admin@admin.fr</code> · Mot de passe : <code>admin123</code>
+          </div>
+          <div className="muted" style={{ fontSize: '12px' }}>
+            Pour vous connecter en tant qu'utilisateur, passez par l'inscription.
+          </div>
+        </div>
       </div>
     </div>
   );

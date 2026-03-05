@@ -140,7 +140,7 @@ const AdminPartners = () => {
                 <button
                   type="button"
                   onClick={() => deletePartner(p._id)}
-                  style={{ backgroundColor: '#d9534f' }}
+                  className="btn-danger"
                 >
                   Supprimer
                 </button>
@@ -173,7 +173,7 @@ const AdminPartners = () => {
               <button
                 type="button"
                 onClick={cancelEdit}
-                style={{ backgroundColor: '#666' }}
+                className="btn-neutral"
               >
                 Annuler
               </button>

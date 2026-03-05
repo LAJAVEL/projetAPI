@@ -7,12 +7,14 @@ const Configurator = () => {
   const [components, setComponents] = useState([]);
   const [selections, setSelections] = useState({});
   const [configName, setConfigName] = useState('');
+  const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const { id: configId } = useParams();
 
   useEffect(() => {
     const fetchData = async () => {
+      setError('');
       try {
         const [catsRes, compsRes] = await Promise.all([
           api.get('/categories'),
@@ -26,7 +28,6 @@ const Configurator = () => {
           const config = configRes.data;
           setConfigName(config.name || '');
 
-          // Nettoyage de la structure pour l'édition
           const comps = config.components || [];
           const nextSelections = {};
           
@@ -43,13 +44,12 @@ const Configurator = () => {
           setConfigName('');
         }
       } catch (err) {
-        // Erreur silencieuse ou toast
+        setError('Erreur de chargement du configurateur.');
       } finally {
         setLoading(false);
       }
     };
     fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [configId]);
 
   const calculateTotal = () => {
@@ -60,7 +60,11 @@ const Configurator = () => {
   };
 
   const handleSave = async () => {
-    if (!configName) return alert('Veuillez donner un nom à votre configuration');
+    setError('');
+    if (!configName.trim()) {
+      setError('Veuillez donner un nom à votre configuration.');
+      return;
+    }
     
     const formattedComponents = Object.values(selections)
       .filter(Boolean)
@@ -69,6 +73,11 @@ const Configurator = () => {
         priceAtTime: comp?.prices?.length ? comp.prices[0].price : 0,
         quantity: 1
       }));
+
+    if (formattedComponents.length === 0) {
+      setError('Veuillez sélectionner au moins un composant.');
+      return;
+    }
 
     try {
       if (configId) {
@@ -84,33 +93,48 @@ const Configurator = () => {
       }
       navigate('/');
     } catch (err) {
-      alert('Erreur lors de la sauvegarde');
+      setError('Erreur lors de la sauvegarde.');
     }
   };
 
   if (loading) return <p>Chargement du configurateur...</p>;
 
+  const selectedCount = Object.values(selections).filter(Boolean).length;
+
   return (
     <div className="container">
       <h2>{configId ? 'Modifier la configuration' : 'Nouvelle Configuration'}</h2>
+      {error && <p className="error">{error}</p>}
       
-      <div style={{ marginBottom: '20px' }}>
-        <label>Nom de la config : </label>
-        <input 
-          type="text" 
-          value={configName} 
-          onChange={(e) => setConfigName(e.target.value)} 
-          placeholder="Mon PC Gamer 2026"
+      <div className="card">
+        <h3>Informations</h3>
+        <input
+          type="text"
+          value={configName}
+          onChange={(e) => setConfigName(e.target.value)}
+          placeholder="Nom de la config (ex: Mon PC Gamer 2026)"
+          required
         />
+        <div className="muted" style={{ fontSize: '12px' }}>
+          Sélections : {selectedCount} · Total estimé : {calculateTotal()} €
+        </div>
       </div>
 
       {categories.map(cat => {
         const catComponents = components.filter(c => c.category && (c.category._id === cat._id || c.category === cat._id));
+        const selected = selections[cat._id];
         return (
           <div key={cat._id} className="card">
-            <h3>{cat.name}</h3>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: '12px', flexWrap: 'wrap' }}>
+              <h3>{cat.name}</h3>
+              {selected ? (
+                <span className="muted" style={{ fontSize: '12px' }}>sélectionné</span>
+              ) : (
+                <span className="muted" style={{ fontSize: '12px' }}>à choisir</span>
+              )}
+            </div>
             <select 
-              value={selections[cat._id]?._id || ""}
+              value={selected?._id || ""}
               onChange={(e) => {
                 const comp = components.find(c => c._id === e.target.value);
                 setSelections(prev => ({
@@ -126,21 +150,43 @@ const Configurator = () => {
                 </option>
               ))}
             </select>
-            {selections[cat._id] && (
-              <p style={{ fontSize: '0.9em', color: '#666' }}>
-                {selections[cat._id].description}
-              </p>
+            {selected && (
+              <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
+                {selected.image ? (
+                  <img
+                    src={selected.image}
+                    alt={`${selected.brand} ${selected.title}`}
+                    className="thumb"
+                    onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                  />
+                ) : null}
+                <div style={{ display: 'grid', gap: '6px', minWidth: 0 }}>
+                  <div style={{ fontWeight: 650 }}>
+                    {selected.brand} {selected.model ? `${selected.model} · ` : ''}{selected.title}
+                  </div>
+                  {selected.description ? (
+                    <div className="muted" style={{ fontSize: '12px' }}>{selected.description}</div>
+                  ) : (
+                    <div className="muted" style={{ fontSize: '12px' }}>Aucune description.</div>
+                  )}
+                </div>
+              </div>
             )}
           </div>
         );
       })}
 
-        <div style={{ marginTop: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <h3>Total Estimé : {calculateTotal()} €</h3>
-          <button onClick={handleSave} disabled={Object.keys(selections).length === 0}>
-            {configId ? 'Mettre à jour' : 'Sauvegarder la configuration'}
+      <div className="card">
+        <div className="row-actions" style={{ justifyContent: 'space-between' }}>
+          <div style={{ display: 'grid', gap: '4px' }}>
+            <div style={{ fontWeight: 650 }}>Total estimé</div>
+            <div className="muted" style={{ fontSize: '12px' }}>{calculateTotal()} €</div>
+          </div>
+          <button onClick={handleSave} className="btn-primary" disabled={!configName.trim() || selectedCount === 0}>
+            {configId ? 'Mettre à jour' : 'Sauvegarder'}
           </button>
         </div>
+      </div>
     </div>
   );
 };

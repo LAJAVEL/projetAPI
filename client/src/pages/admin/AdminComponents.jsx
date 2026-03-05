@@ -73,27 +73,27 @@ const AdminComponents = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
     try {
-      if (!price) {
-        alert('Veuillez renseigner un prix');
-        return;
-      }
+      const nextCategory = String(category || '').trim();
+      const nextBrand = String(brand || '').trim();
+      const nextTitle = String(title || '').trim();
+      const nextPrice = Number(price);
 
-      const numericPrice = Number(price);
-      if (Number.isNaN(numericPrice)) {
-        alert('Prix invalide');
-        return;
-      }
+      if (!nextCategory) return setError('Veuillez sélectionner une catégorie.');
+      if (!nextBrand) return setError('Veuillez renseigner une marque.');
+      if (!nextTitle) return setError('Veuillez renseigner un titre.');
+      if (!price || Number.isNaN(nextPrice) || nextPrice <= 0) return setError('Veuillez renseigner un prix valide.');
 
-      const prices = [{ partner: partner || undefined, price: numericPrice }];
+      const prices = [{ partner: partner || undefined, price: nextPrice }];
 
       const componentData = {
-        category,
-        brand,
-        title,
+        category: nextCategory,
+        brand: nextBrand,
+        title: nextTitle,
         model,
         description,
-        image,
+        image: String(image || '').trim(),
         prices,
       };
 
@@ -106,7 +106,7 @@ const AdminComponents = () => {
       resetForm();
       fetchData();
     } catch (err) {
-      alert("Erreur lors de l'enregistrement");
+      setError("Erreur lors de l'enregistrement.");
     }
   };
 
@@ -142,7 +142,6 @@ const AdminComponents = () => {
             value={category} 
             onChange={(e) => setCategory(e.target.value)} 
             required
-            style={{ marginBottom: '1rem', width: '100%', padding: '0.5rem' }}
           >
             <option value="">Sélectionner une catégorie</option>
             {categories.map((c) => (
@@ -157,35 +156,30 @@ const AdminComponents = () => {
             onChange={(e) => setBrand(e.target.value)}
             placeholder="Marque (ex: Intel)"
             required
-            style={{ marginBottom: '1rem', width: '100%', padding: '0.5rem' }}
           />
           <input
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="Titre (ex: Core i7-14700K)"
             required
-            style={{ marginBottom: '1rem', width: '100%', padding: '0.5rem' }}
           />
           <input
             value={model}
             onChange={(e) => setModel(e.target.value)}
             placeholder="Modèle (optionnel)"
-            style={{ marginBottom: '1rem', width: '100%', padding: '0.5rem' }}
           />
           <input
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             placeholder="Description (optionnel)"
-            style={{ marginBottom: '1rem', width: '100%', padding: '0.5rem' }}
           />
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
             <div>
-              <label style={{ fontWeight: 700, display: 'block', marginBottom: '0.5rem' }}>Partenaire</label>
+              <label style={{ fontWeight: 650, display: 'block', marginBottom: '6px' }}>Partenaire</label>
               <select 
                 value={partner} 
                 onChange={(e) => setPartner(e.target.value)}
-                style={{ width: '100%', padding: '0.5rem' }}
               >
                 <option value="">Aucun</option>
                 {partners.map((p) => (
@@ -196,13 +190,15 @@ const AdminComponents = () => {
               </select>
             </div>
             <div>
-              <label style={{ fontWeight: 700, display: 'block', marginBottom: '0.5rem' }}>Prix (€)</label>
+              <label style={{ fontWeight: 650, display: 'block', marginBottom: '6px' }}>Prix (€)</label>
               <input
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
                 placeholder="650"
-                style={{ width: '100%', padding: '0.5rem' }}
                 required
+                type="number"
+                min="0.01"
+                step="0.01"
               />
             </div>
           </div>
@@ -211,18 +207,28 @@ const AdminComponents = () => {
             value={image} 
             onChange={(e) => setImage(e.target.value)} 
             placeholder="URL Image (optionnel)" 
-            style={{ marginBottom: '1rem', width: '100%', padding: '0.5rem' }}
           />
 
-          <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
-            <button type="submit" style={{ padding: '0.75rem 1.5rem', cursor: 'pointer' }}>
+          {image ? (
+            <div style={{ marginTop: '6px', marginBottom: '14px' }}>
+              <img
+                src={image}
+                alt="aperçu"
+                className="thumb"
+                onError={(e) => { e.currentTarget.style.display = 'none'; }}
+              />
+            </div>
+          ) : null}
+
+          <div className="row-actions">
+            <button type="submit" className="btn-primary">
               {editingId ? 'Mettre à jour' : 'Créer'}
             </button>
             {editingId && (
               <button
                 type="button"
                 onClick={cancelEdit}
-                style={{ backgroundColor: '#666', padding: '0.75rem 1.5rem', cursor: 'pointer' }}
+                className="btn-neutral"
               >
                 Annuler
               </button>
@@ -242,31 +248,34 @@ const AdminComponents = () => {
             {components.map((c) => (
               <div
                 key={c._id}
-                style={{
-                  display: 'grid',
-                  gridTemplateColumns: '1fr auto auto',
-                  gap: '0.75rem',
-                  alignItems: 'center',
-                  padding: '0.75rem 0',
-                  borderBottom: '1px solid #eee',
-                }}
+                className="list-row"
               >
+                {c.image ? (
+                  <img
+                    src={c.image}
+                    alt={`${c.brand} ${c.title}`}
+                    className="thumb"
+                    onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                  />
+                ) : (
+                  <div className="thumb" />
+                )}
                 <div>
-                  <div style={{ fontWeight: 700 }}>
+                  <div style={{ fontWeight: 650 }}>
                     {c.brand} {c.model || ''} {c.title ? `- ${c.title}` : ''}
                   </div>
-                  <div style={{ color: '#666' }}>
+                  <div className="muted" style={{ fontSize: '12px' }}>
                     {c.category?.name ? `${c.category.name} • ` : ''}
                     {c.prices?.[0]?.price != null ? `${c.prices[0].price} €` : 'Prix non renseigné'}
                   </div>
                 </div>
-                <button type="button" onClick={() => startEdit(c._id)}>
+                <button type="button" onClick={() => startEdit(c._id)} className="btn-neutral">
                   Modifier
                 </button>
                 <button
                   type="button"
                   onClick={() => deleteComponent(c._id)}
-                  style={{ backgroundColor: '#d9534f' }}
+                  className="btn-danger"
                 >
                   Supprimer
                 </button>

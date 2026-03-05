@@ -146,7 +146,7 @@ const AdminCategories = () => {
                 <button
                   type="button"
                   onClick={() => deleteCategory(c._id)}
-                  style={{ backgroundColor: '#d9534f' }}
+                  className="btn-danger"
                 >
                   Supprimer
                 </button>
@@ -178,7 +178,7 @@ const AdminCategories = () => {
               <button
                 type="button"
                 onClick={cancelEdit}
-                style={{ backgroundColor: '#666' }}
+                className="btn-neutral"
               >
                 Annuler
               </button>

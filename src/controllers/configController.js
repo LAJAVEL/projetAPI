@@ -125,8 +125,14 @@ const exportConfigPDF = async (req, res) => {
      if (config.user._id.toString() === req.user._id.toString() || req.user.role === 'admin') {
         res.setHeader('Content-Type', 'application/pdf');
         res.setHeader('Content-Disposition', `attachment; filename=config_${config._id}.pdf`);
-        
-        generateConfigPDF(config, res);
+
+        try {
+          await generateConfigPDF(config, res);
+        } catch {
+          if (!res.headersSent) {
+            res.status(500).json({ message: 'Erreur lors de la génération du PDF' });
+          }
+        }
      } else {
         res.status(401).json({ message: 'Not authorized' });
      }
